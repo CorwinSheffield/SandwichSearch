@@ -1,0 +1,1 @@
+insert into sandwichshop (name, rating) values ('Jersey Mike''s', 4.3),('Wawa', 5.0),('Subway',3.2)
