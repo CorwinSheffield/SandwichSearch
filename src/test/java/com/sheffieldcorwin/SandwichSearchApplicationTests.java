@@ -2,6 +2,7 @@ package com.sheffieldcorwin;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.net.URI;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.sheffieldcorwin.dao.SandwichShopRepository;
+import com.sheffieldcorwin.model.Rating;
 import com.sheffieldcorwin.model.SandwichShop;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -36,7 +38,7 @@ class SandwichSearchApplicationTests {
 
 	@Test
 	void testDataBaseConnectivity(){
-		SandwichShop shop = new SandwichShop(null, "capriottis",3.0);
+		SandwichShop shop = new SandwichShop(null, "capriottis", new BigDecimal (3.0));
 		SandwichShop newShop = sandwichShopRepository.save(shop);
 		
 		assertThat(newShop.name()).isEqualTo(shop.name());
@@ -49,7 +51,7 @@ class SandwichSearchApplicationTests {
 		
 		logger.traceEntry();
 		
-		SandwichShop sandwichShop = new SandwichShop(null, "Capriottis", 3.0);
+		SandwichShop sandwichShop = new SandwichShop(null, "Capriottis", new BigDecimal(3.0));
 		logger.debug("New SandwichShop: {}", sandwichShop.toString());
 		ResponseEntity<Void> response = restTemplate.postForEntity("/sandwichshops", sandwichShop, Void.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -60,5 +62,14 @@ class SandwichSearchApplicationTests {
 		assertThat(createdShop.id()).isNotNull();
 	
 	
+	}
+	
+	@Test
+	public void testRestaurantHasReviews() {
+		Rating[] ratings = restTemplate.getForObject("/sandwichshops/{id}/ratings", Rating[].class ,2);
+		for (Rating rating: ratings) {
+			logger.info("Rating: {}" ,rating.toString());
+		}
+		assertThat(ratings.length).isGreaterThan(0);
 	}
 }

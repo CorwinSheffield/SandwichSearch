@@ -3,6 +3,7 @@ package com.sheffieldcorwin.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +25,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(authz -> authz.anyRequest().permitAll()).csrf(CsrfConfigurer::disable);
+		http.authorizeHttpRequests(authz -> authz.anyRequest().permitAll()).csrf(CsrfConfigurer::disable).cors(CorsConfigurer::disable);
 		return http.build();
 	}
 
