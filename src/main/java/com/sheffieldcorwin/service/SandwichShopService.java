@@ -34,6 +34,10 @@ public class SandwichShopService {
 	public Optional<SandwichShop> getSandwichShopById(Long id) {
 		return sandwichShopRepository.findById(id);
 	}
+	
+	public Optional<SandwichShop>	 getSandwichShopByName(String name)	{
+		return sandwichShopRepository.findByNameIgnoreCase(name);
+	}
 
 	public SandwichShop createSandwichShop(SandwichShop sandwichShop) {
 		return sandwichShopRepository.save(sandwichShop);
